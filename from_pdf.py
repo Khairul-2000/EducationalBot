@@ -9,8 +9,6 @@ from langchain_community.vectorstores import FAISS
 from langchain.docstore.document import Document
 
 
-
-
 # 3. Enhanced Bengali Text Cleaning (same as before)
 def clean_bangla_text(text):
     text = re.sub(r'[^\u0980-\u09FF০-৯।,!?\'"()\s]', '', text)
@@ -20,12 +18,12 @@ def clean_bangla_text(text):
     text = re.sub(r'\s+', ' ', text)
     return text.strip()
 
- # 2. Load text from file
-with open("Test.txt", "r", encoding="utf-8") as file:
-    raw_text = file.read()
+# Main processing
+pdf_path = "HSC26-Bangla1st-Paper.pdf"
+
 # Extract and clean text
 print("Extracting text from PDF...")
-
+raw_text = extract_bengali_text(pdf_path)
 print("Cleaning text...")
 cleaned_text = clean_bangla_text(raw_text)
 
@@ -54,5 +52,5 @@ embedding_model = HuggingFaceEmbeddings(
 # Create and save vector store
 docs = [Document(page_content=chunk) for chunk in chunks]
 vectorstore = FAISS.from_documents(docs, embedding_model)
-vectorstore.save_local("faiss_index_bangla_test")
+vectorstore.save_local("faiss_index_bangla")
 print("Vector store created successfully!")
