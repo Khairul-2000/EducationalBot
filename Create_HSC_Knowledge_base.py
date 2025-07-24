@@ -21,8 +21,8 @@ def extract_hsc_text(pdf_path, max_pages=10):
     print(f"🔄 Converting PDF to images...")
     images = convert_from_path(
         pdf_path, 
-        dpi=300,  # Reduced DPI for faster processing
-        poppler_path=r'C:\Users\Khairul Islam\Downloads\Release-24.08.0-0\poppler-24.08.0\Library\bin'
+        dpi=300  # Reduced DPI for faster processing
+        # poppler_path is not needed on Linux if poppler-utils is installed
     )
     
     # Limit pages for initial testing

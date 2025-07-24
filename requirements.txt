@@ -1,0 +1,36 @@
+# Core machine learning and AI packages
+langchain
+langchain-community
+langchain-openai
+
+# OCR and Image Processing
+paddleocr
+pdf2image
+pytesseract
+Pillow
+numpy
+opencv-python
+
+# Vector Store and Embeddings
+faiss-cpu
+sentence-transformers
+
+# Document Processing
+pypdf
+pymupdf
+
+# Environment and Configuration
+python-dotenv
+
+# Web scraping and utilities
+requests
+beautifulsoup4
+
+# Data processing
+pandas
+
+# Chat models
+openai
+
+# Additional utilities
+tqdm
