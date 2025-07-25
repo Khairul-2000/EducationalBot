@@ -11,6 +11,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from dotenv import load_dotenv
+from Memory import chat_history, get_short_term_memory, format_chat_history  # Import from Memory module
 
 # Load environment variables
 load_dotenv()
@@ -22,7 +23,7 @@ if not api_key:
 
 
 # Replace OpenAI with ChatOpenAI
-llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0, api_key=api_key)
+llm = ChatOpenAI(model_name="gpt-4o", temperature=0, api_key=api_key)
 
 
 
@@ -68,36 +69,47 @@ prompt = PromptTemplate(
     input_variables=["context", "question"]
 )
 
-# # 8. Better LLM for Bengali
-# llm = ChatOllama(
-#     model="llama3:8b",  # Better for Bengali than Mistral
-#     temperature=0.2,
-#     num_ctx=4096  # Larger context window
-# )
-
-
 ## ....................................................................
 # 9. Configure RetrievalQA
 qa_chain_new = RetrievalQA.from_chain_type(
     llm=llm,
     chain_type="stuff",
-    retriever=vectorstore.as_retriever(search_kwargs={"k": 5}),  # Get more context
+    retriever=vectorstore.as_retriever(search_kwargs={"k": 10}),  # Get more context
     return_source_documents=True,
     chain_type_kwargs={"prompt": prompt},
     verbose=False
 )
 
-# 10. Test with sample queries
-test_queries = [
-    "বাংলাপিডিয়ার প্রধান উদ্দেশ্য কী?",
-    "How has বাংলাপিডিয়া been received since its first publication?",
-    "What should readers do if they find any errors or inconsistencies in the online version of বাংলাপিডিয়া?"
-]
+# # 10. Test with sample queries
+# test_queries = [
+#     " 'অপরিচিতা' গল্পের কল্যাণীর বিয়ে না করার কারণ কী ছিল?",
+#     # "'অপরিচিতা' গল্পে গল্প বলায় পটু কে ?",
+# ]
 
-for query in test_queries:
-    result = qa_chain({"query": query})
-    print(f"\n❓ প্রশ্ন: {query}")
-    print(f"🧠 উত্তর: {result['result']}")
-    print("🔍 প্রাসঙ্গিক অংশ:")
-    for doc in result['source_documents'][:2]:
-        print(f" - {doc.page_content[:100]}...")
+
+
+# with open("test_results.txt", "w", encoding="utf-8") as file:
+#     for query in test_queries:
+#         if not query.strip():  # Skip empty queries
+#             continue
+
+#         # Add user query to chat history
+#         chat_history.append(("User", query))
+
+#         # Retrieve short-term memory
+#         short_term_memory = get_short_term_memory(chat_history)
+
+#         # Format the memory to pass as context
+#         formatted_memory = format_chat_history(short_term_memory)
+
+#         # Use it in the query
+#         result = qa_chain_new({"query": query, "context": formatted_memory})
+
+#         # Add system response to chat history
+#         chat_history.append(("System", result['result']))
+
+#         file.write(f"\n❓ প্রশ্ন: {query}\n")
+#         file.write(f"🧠 উত্তর: {result['result']}\n")
+#         file.write("🔍 প্রাসঙ্গিক অংশ:\n")
+#         for doc in result['source_documents'][:2]:
+#             file.write(f" - {doc.page_content[:100]}...\n")

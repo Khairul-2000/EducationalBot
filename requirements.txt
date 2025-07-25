@@ -34,3 +34,8 @@ openai
 
 # Additional utilities
 tqdm
+
+# FastAPI and web server
+fastapi
+uvicorn
+pydantic
