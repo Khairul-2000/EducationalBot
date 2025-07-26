@@ -368,11 +368,9 @@ Access the complete API collection: [Postman Documentation](https://documenter.g
 
 ### Document Processing:
 
-- **PyPDF**: PDF text extraction
-- **PyMuPDF**: Advanced PDF processing
-- **PaddleOCR**: Optical Character Recognition
+
+- **pytesseract**: Optical Character Recognition
 - **pdf2image**: PDF to image conversion
-- **Pillow**: Image processing
 
 ### Web Framework:
 
@@ -382,11 +380,10 @@ Access the complete API collection: [Postman Documentation](https://documenter.g
 
 ### Utilities:
 
-- **NumPy**: Numerical operations
+
 - **Pandas**: Data manipulation
 - **python-dotenv**: Environment variable management
-- **BeautifulSoup4**: Web scraping
-- **tqdm**: Progress bars
+
 
 ### Development Tools:
 
