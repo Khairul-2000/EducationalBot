@@ -2,7 +2,51 @@
 
 A sophisticated Retrieval-Augmented Generation (RAG) chatbot designed for Bengali educational content. This system processes PDF documents, creates embeddings, and provides intelligent responses using OpenAI's GPT-4 with memory capabilities.
 
-## 📋 Table of Contents
+## 📋 Table o### Postman Collection
+
+Access the complete API collection: [Postman Documentation](https://documenter.getpostman.com/view/29264276/2sB34oDHg2)
+
+## ❓ Q&A
+
+### **What method or library did you use to extract the text, and why? Did you face any formatting challenges with the PDF content?**
+
+The PDF of the book is not an original digital copy; it's a scanned version. Therefore, I used **pytesseract** for OCR-based text extraction. To make it work, I installed tesseract-ocr and tesseract-ocr-ben on Ubuntu, as it performs better on Linux than on Windows. After extraction, I cleaned the text by removing unwanted characters while preserving Bengali, English, and numeric characters, and normalized the text for consistency.
+
+### **What chunking strategy did you choose (e.g. paragraph-based, sentence-based, character limit)? Why do you think it works well for semantic retrieval?**
+
+I used **RecursiveCharacterTextSplitter**, which attempts to maintain larger textual units like paragraphs. If the chunk exceeds the set size, it breaks further into sentences, and finally into words if needed. This strategy helps maintain context and preserves semantic coherence across chunks. It also allows setting chunk size and overlap, which reduces the chance of losing important context at the boundaries.
+
+### **What embedding model did you use? Why did you choose it? How does it capture the meaning of the text?**
+
+I used **sentence-transformers/paraphrase-multilingual-mpnet-base-v2**. I compared it with models like intfloat/e5-mistral-7b-instruct and text-embedding-3-small, but those models are large and not as effective with Bengali text. This model supports multiple languages and outperforms older models like BERT in sentence-level semantic understanding. It encodes the sentence into a 768-dimensional dense vector and considers the full sentence context to capture relationships between words.
+
+### **How are you comparing the query with your stored chunks? Why did you choose this similarity method and storage setup?**
+
+Stored chunks are compared using **FAISS** for efficient similarity search. Embeddings are generated using the multilingual MPNet model, and cosine similarity is used to measure closeness between query and chunk embeddings. FAISS was chosen because it is optimized for large-scale, fast vector retrieval, and the embedding model provides semantic relevance in multilingual contexts.
+
+### **How do you ensure that the question and the document chunks are compared meaningfully? What would happen if the query is vague or missing context?**
+
+To ensure meaningful comparison:
+
+- **Semantic Embeddings**: The model captures intent and semantics beyond surface-level keywords.
+- **Chunking Strategy**: Text is split into 400-character chunks with 50-character overlap for contextual retention.
+- **Metadata**: Each chunk is associated with metadata like source and chunk ID for better traceability.
+
+If a query is vague or lacks context, it may lead to irrelevant results. To address this, we:
+
+- Use short-term memory to retain dialogue context.
+- Allow clarification prompts to refine vague queries.
+
+### **Do the results seem relevant? If not, what might improve them?**
+
+Generally, the results are relevant, though low similarity scores occasionally indicate mismatches. Improvements include:
+
+- **Better Chunking**: Use semantic-based splitting.
+- **Advanced Embedding Models**: Fine-tune on Bengali literature for domain-specific understanding.
+- **Expanded Corpus**: Add more documents to enhance coverage.
+- **Hybrid Search**: Combine dense vector search with keyword-based retrieval to boost recall.
+
+## 🛠️ Used Tools & Librariestents
 
 - [Features](#features)
 - [Prerequisites](#prerequisites)
