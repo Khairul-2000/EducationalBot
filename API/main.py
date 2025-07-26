@@ -1,4 +1,10 @@
 from fastapi import FastAPI
+import sys
+import os
+
+# Add the current directory to Python path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from routes import router
 import uvicorn
 
